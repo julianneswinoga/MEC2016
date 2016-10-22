@@ -10,4 +10,7 @@ class Accelerometer:
     
     def updateAccelData(self):
         #Replace this value with sensor simulation
-        self.magnitude = 0.25;
+        self.magnitude = 0.25
+
+    def getStatus(self):
+        return true
