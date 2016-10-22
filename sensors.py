@@ -31,5 +31,7 @@ class Sensors:
     def getLightSensor(self):
         return self.light.getLightData()
 
-a = Sensors()
+    def getStatus(self):
+        return true
+
 
