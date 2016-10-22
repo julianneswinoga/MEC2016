@@ -1,3 +1,5 @@
+# http://www.binarytides.com/programming-udp-sockets-in-python/
+
 '''
     Simple udp socket server
 '''
