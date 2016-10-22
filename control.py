@@ -25,6 +25,7 @@ class ControlBoard:
 		self.moduleNames = ['controlBoard', 'powerBoard', 'sensorBoard', 'logging', 'gsmBoard', 'radioBoard']
 		self.logTime = 5
 		self.lastLogTime = 99
+		self.sensorData = {'light': 0, 'acc': 0, 'tmp': 0, 'baro': 0}
 	
 	def status(self, **kwargs):
 		if ('module' not in kwargs or 'function' not in kwargs or 'args' not in kwargs):
@@ -49,6 +50,12 @@ class ControlBoard:
 			
 		return True
 	
+	def updateSensors(self):
+		self.sensorData['light'] = None#self.status(module = self.sensorBoard, function = 'getAccelerometer', args = [])
+		self.sensorData['acc'] = self.status(module = self.sensorBoard, function = 'getAccelerometer', args = [])
+		self.sensorData['tmp'] = self.status(module = self.sensorBoard, function = 'getAirTemperature', args = [])
+		self.sensorData['baro'] = self.status(module = self.sensorBoard, function = 'getBarometer', args = [])
+		
 	def sendGSMMsg(self, id, msg):
 		return self.gsmBoard.sendMessage(id, msg)
 	
@@ -84,9 +91,9 @@ if __name__ == '__main__':
 	print 'Power manager status:', control.status(module = control.powerBoard, function = 'getStatus', args = [])
 	
 	while (True):
+		control.updateSensors()
 		if (control.isPendingGSMMessage() is not False):
 			control.handleMessage(control.GSMPendingMessage())
-		
 	
 		powerStatus = control.powerOverload()
 		if (powerStatus == False):
