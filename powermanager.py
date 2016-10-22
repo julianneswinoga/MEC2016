@@ -1,5 +1,7 @@
 from battery import Battery as InternalBattery #Battery
 
+import random #for simulation
+
 class PowerManager: #Power Manager Class
     def __init__(self): #Initialization
         self.status = True
@@ -15,7 +17,7 @@ class PowerManager: #Power Manager Class
         
     def updateLoad(self):
         for i in self.poweredComponents: #For every running component, measure the load and add to the stored value. simulated to 1
-            self.poweredComponents[i] = 1
+            self.poweredComponents[i] = 0.9+0.2*random.random()
 
     def getLoad(self):
         self.updateLoad()
@@ -26,5 +28,3 @@ class PowerManager: #Power Manager Class
             return self.battery.getVoltage()
         else:
             return 0
-        
-A = PowerManager()
