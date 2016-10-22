@@ -1,9 +1,11 @@
 class Barometer:
     
     def __init__(self):
-        self.currentPressure
-    
+        self.currentPressure=0
+        self.updatePressure()
+        
     def getPressure(self):
+        self.updatePressure()
         return self.currentPressure
     
     def updatePressure(self):

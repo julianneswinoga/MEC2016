@@ -1,31 +1,25 @@
-import accelerometer.py
-import temperature.py
-import barometer.py
+from accelerometer import Accelerometer
+from temperature import Temperature
+from barometer import Barometer
 
 class Sensors:
     
     def __init__(self):
-        self.accelerometer
-        self.waterTemperature
-        self.airTemperature
-        self.barometer
-    
-    def readSensors(self):
-        #Read values into local variables from individual sensor classes
-        self.accelerometer = accelerometer.getAccelData()
-        self.waterTemperature = temperature.getWaterTemp()
-        self.airTemperature = temperature.getAirTemp()
-        self.barometer = barometer.getPressure()
+        self.accelerometer = Accelerometer()
+        self.temperature = Temperature()
+        self.barometer = Barometer()
     
     def getAccelerometer(self):
-        return accelerometer.getAccelData()
+        return self.accelerometer.getAccelData()
     
     def getWaterTemperature(self):
-        return temperature.getWaterTemp()
+        return self.temperature.getWaterTemp()
     
     def getAirTemperature(self):
-        return temperature.getAirTemp()
+        return self.temperature.getAirTemp()
     
     def getBarometer(self):
-        return barometer.getPressre()
+        return self.barometer.getPressure()
     #end
+
+
