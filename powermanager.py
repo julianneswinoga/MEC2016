@@ -21,7 +21,6 @@ class PowerManager: #Power Manager Class
                                     "logging":1,
                                     "radioBoard":1,
                                     "gsmBoard":0,
-                                    "view":0
                                  } #Powered Components
         return None
     
