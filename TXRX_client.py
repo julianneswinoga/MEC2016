@@ -1,3 +1,5 @@
+# http://www.binarytides.com/programming-udp-sockets-in-python/
+
 '''
     udp socket client
     Silver Moon
