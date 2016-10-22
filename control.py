@@ -1,5 +1,5 @@
 # Control module
-import sys
+
 from powermanager import powermanager
 
 class Control:
