@@ -17,3 +17,6 @@ class Temperature:
         #Replace these assignments with sensor simulation
         self.currentAirTemp = 25.0
         self.currentWaterTemp = 18.7
+
+    def getStatus(self):
+        return true
