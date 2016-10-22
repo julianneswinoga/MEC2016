@@ -1,6 +1,7 @@
 from accelerometer import Accelerometer
 from temperature import Temperature
 from barometer import Barometer
+from gps import GPS
 
 class Sensors:
     
@@ -8,6 +9,7 @@ class Sensors:
         self.accelerometer = Accelerometer()
         self.temperature = Temperature()
         self.barometer = Barometer()
+        self.gps = GPS()
     
     def getAccelerometer(self):
         return self.accelerometer.getAccelData()
@@ -20,6 +22,10 @@ class Sensors:
     
     def getBarometer(self):
         return self.barometer.getPressure()
-    #end
+
+    def getGPS(self):
+        return self.gps.getGPSData()
+
+a=Sensors()
 
 
