@@ -1,4 +1,4 @@
-class gsmboard: #gsm board module
+class GsmBoard: #gsm board module
     def __init__(self): #initialization
         self.status = True
         
