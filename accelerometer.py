@@ -1,9 +1,11 @@
 class Accelerometer:
     
     def __init__(self):
-        self.magnitude
-        
+        self.magnitude=0
+        self.updateAccelData()
+    
     def getAccelData(self):
+        self.updateAccelData()
         return self.magnitude
     
     def updateAccelData(self):
