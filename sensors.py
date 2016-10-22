@@ -26,6 +26,5 @@ class Sensors:
     def getGPS(self):
         return self.gps.getGPSData()
 
-a=Sensors()
 
 
