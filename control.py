@@ -18,7 +18,7 @@ class ControlBoard:
 
 	def __init__(self):
 		self.powerBoard = PowerManager()
-		#self.sensors_module = Sensors()
+		#self.sensorBoard = Sensors()
 	
 	def status(self, **kwargs):
 		if ('module' not in kwargs or 'function' not in kwargs or 'args' not in kwargs):
