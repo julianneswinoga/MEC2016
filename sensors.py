@@ -2,6 +2,7 @@ from accelerometer import Accelerometer
 from temperature import Temperature
 from barometer import Barometer
 from gps import GPS
+from lightsensor import LightSensor
 
 class Sensors:
     
@@ -10,6 +11,7 @@ class Sensors:
         self.temperature = Temperature()
         self.barometer = Barometer()
         self.gps = GPS()
+        self.light = LightSensor()
     
     def getAccelerometer(self):
         return self.accelerometer.getAccelData()
@@ -26,5 +28,8 @@ class Sensors:
     def getGPS(self):
         return self.gps.getGPSData()
 
+    def getLightSensor(self):
+        return self.light.getLightData()
 
+a = Sensors()
 
