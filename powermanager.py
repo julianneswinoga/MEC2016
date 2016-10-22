@@ -12,14 +12,16 @@ class PowerManager: #Power Manager Class
         
         self.poweredComponents = {
                                     "controlBoard":1,
-                                    "powerManager":1,
-                                    "lightSensor":1,
-                                    "accelerometer":1,
-                                    "temperatureSensor":1,
-                                    "barometer":1,
-                                    "sensorInterface":1,
-                                    "database":1,
-                                    "rXTXModule":1
+                                    "powerBoard":1,
+                                    "light":1,
+                                    "acc":1,
+                                    "tmp":1,
+                                    "baro":1,
+                                    "sensorBoard":1,
+                                    "logging":1,
+                                    "radioBoard":1,
+                                    "gsmBoard":0,
+                                    "view":0
                                  } #Powered Components
         return None
     
