@@ -2,8 +2,9 @@
 
 import time, sys
 from powermanager import PowerManager
-#from sensors import Sensors
+from sensors import Sensors
 from gsmboard import GsmBoard
+from database import Database
 
 class Unbuffered(object): # http://stackoverflow.com/questions/107705/disable-output-buffering
    def __init__(self, stream):
@@ -15,13 +16,13 @@ class Unbuffered(object): # http://stackoverflow.com/questions/107705/disable-ou
        return getattr(self.stream, attr)
 	   
 class ControlBoard:
-	moduleNames = ['controlBoard', 'powerBoard', 'sensorBoard', 'logging', 'gsmBoard', 'radioBoard']
-
 	def __init__(self):
 		self.powerBoard = PowerManager()
-		#self.sensorBoard = Sensors()
+		self.sensorBoard = Sensors()
 		self.gsmBoard = GsmBoard()
+		self.logging = Database()
 		
+		self.moduleNames = ['controlBoard', 'powerBoard', 'sensorBoard', 'logging', 'gsmBoard', 'radioBoard']
 		self.logTime = 5
 		self.lastLogTime = 99
 	
@@ -56,7 +57,7 @@ class ControlBoard:
 		
 	def powerOverload(self):
 		overloaded = []
-		for moduleName in moduleNames:
+		for moduleName in self.moduleNames:
 			modulePower = self.getModuleLoad(moduleName)
 			if (modulePower >= 2):
 				overloaded.append({ 'name': moduleName, 'power': modulePower })
@@ -65,10 +66,13 @@ class ControlBoard:
 			return False
 		else:
 			return overloaded
-			
-	def writeLog(self):
+	
+	def writeDB(self, data):
+		return self.status(module = self.logging, function = 'insert', args = [data])
+	
+	def writeLog(self, data):
 		currTime = time.time()
-		
+		self.writeDB(data)
 		self.lastLogTime = currTime
 		return True
 
@@ -80,9 +84,9 @@ if __name__ == '__main__':
 	print 'Power manager status:', control.status(module = control.powerBoard, function = 'getStatus', args = [])
 	
 	while (True):
-		if (control.isPendingGSMMsg() is not False):
+		if (control.isPendingGSMMessage() is not False):
 			control.handleMessage(control.GSMPendingMessage())
-	
+		
 	
 		powerStatus = control.powerOverload()
 		if (powerStatus == False):
