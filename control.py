@@ -1,12 +1,22 @@
 # Control module
 
-from powermanager import powermanager
+import time, sys
+from powermanager import PowerManager
 
+class Unbuffered(object): # http://stackoverflow.com/questions/107705/disable-output-buffering
+   def __init__(self, stream):
+       self.stream = stream
+   def write(self, data):
+       self.stream.write(data)
+       self.stream.flush()
+   def __getattr__(self, attr):
+       return getattr(self.stream, attr)
+	   
 class Control:
 	def __init__(self):
-		self.sensors_module = powermanager()
+		self.powermanager_module = PowerManager()
 	
-	def status(self, **kwargs): # module
+	def status(self, **kwargs):
 		if ('module' not in kwargs or 'function' not in kwargs or 'args' not in kwargs):
 			print 'Function status called wrong'
 			return False
@@ -14,10 +24,35 @@ class Control:
 			return {'err': False, 'msg': 'Status of ' + kwargs['module'].__name__ + ' has failed'}
 		
 		return getattr(kwargs['module'], kwargs['function'])(*kwargs['args'])
+		
+	def getModuleLoad(self, moduleName):
+		return self.status(module = self.powermanager_module, function = 'getLoad', args = [])[moduleName]
+		
+	def powerOverload(self):
+		overloaded = []
+		for moduleName in ['controlBoard', 'powerManager']:
+			modulePower = self.getModuleLoad(moduleName)
+			if (modulePower >= 2):
+				overloaded.append({ 'name': moduleName, 'power':modulePower })
+				
+		if (len(overloaded) == 0):
+			return False
+		else:
+			return overloaded
 			
-			
-if __name__ == "__main__":
-	cntrl = Control()
+if __name__ == '__main__':
+	sys.stdout = Unbuffered(sys.stdout)
+	control_module = Control()
 	print 'Control module start'
-	print cntrl.status(module = cntrl.sensors_module, function = 'getStatus', args = [])
+	
+	print 'Power manager status:', control_module.status(module = control_module.powermanager_module, function = 'getStatus', args = [])
+	
+	while (True):
+		powerStatus = control_module.powerOverload()
+		if (powerStatus == False):
+			print 'Working fine'
+		else:
+			print 'Overload!', [i['name']+': '+str(i['power']) for i in powerStatus]
+			
+		time.sleep(1)
 	
