@@ -13,11 +13,11 @@ class Unbuffered(object): # http://stackoverflow.com/questions/107705/disable-ou
    def __getattr__(self, attr):
        return getattr(self.stream, attr)
 	   
-class Control:
-	moduleNames = ['controlBoard', 'powerManager']
+class ControlBoard:
+	moduleNames = ['controlBoard', 'powerBoard', 'sensorBoard', 'logging', 'gsmBoard', 'radioBoard']
 
 	def __init__(self):
-		self.powermanager_module = PowerManager()
+		self.powerBoard = PowerManager()
 		#self.sensors_module = Sensors()
 	
 	def status(self, **kwargs):
@@ -30,7 +30,7 @@ class Control:
 		return getattr(kwargs['module'], kwargs['function'])(*kwargs['args'])
 		
 	def getModuleLoad(self, moduleName):
-		return self.status(module = self.powermanager_module, function = 'getLoad', args = [moduleName])
+		return self.status(module = self.powerBoard, function = 'getLoad', args = [moduleName])
 		
 	def powerOverload(self):
 		overloaded = []
@@ -49,19 +49,19 @@ class Control:
 
 if __name__ == '__main__':
 	sys.stdout = Unbuffered(sys.stdout)
-	control_module = Control()
+	control = ControlBoard()
 	print 'Control module start'
 	
-	print 'Power manager status:', control_module.status(module = control_module.powermanager_module, function = 'getStatus', args = [])
+	print 'Power manager status:', control.status(module = control.powerBoard, function = 'getStatus', args = [])
 	
 	while (True):
-		powerStatus = control_module.powerOverload()
+		powerStatus = control.powerOverload()
 		if (powerStatus == False):
 			print 'Working fine'
 		else:
 			print 'Overload!'
 		
-		control_module.writeLog()
+		control.writeLog()
 		
 		time.sleep(1)
 	
