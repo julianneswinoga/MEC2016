@@ -11,3 +11,6 @@ class Barometer:
     def updatePressure(self):
         #Replace this assignment with sensor simulation
         self.currentPressure = 101.4
+
+    def getStatus(self):
+        return true
