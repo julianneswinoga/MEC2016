@@ -3,6 +3,7 @@
 
 import sqlite3 as sql
 
+import time
 from time import gmtime, strftime
 
 class Database:
@@ -19,19 +20,28 @@ class Database:
 
     def createQuery(self, data):
         # http://stackoverflow.com/questions/415511/how-to-get-current-time-in-python
-        query = 'INSERT INTO {} VALUES ('.format(strftime("%Y-%m-%d %H:%M:%S",
+        time.sleep(1)
+        query = 'INSERT INTO data VALUES ("{}",'.format(strftime("%Y-%m-%d %H:%M:%S",
         gmtime()))
         attributes = 'light', 'acc', 'tmp', 'baro'
         for i, attr in enumerate(attributes):
             if i < len(attributes)-1:
                 query += str(data[attr]) + ','
             else:
-                query += str(data[attr]) + ']'
-        print query
+                query += str(data[attr]) + ')'
         return query
 
     def insert(self, data):
         query = self.createQuery(data)
+        print query
         with sql.connect(self.dbFile) as con:
             cur = con.cursor()
-            cur.execute(data)
+            cur.execute(query)
+
+    def retreive(self, type_, from_, to):
+        if type_ == 'all':
+            pass
+        elif type_ == 'range':
+            pass
+        elif type_ == 'to':
+            pass
