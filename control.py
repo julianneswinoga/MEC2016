@@ -1,6 +1,6 @@
 # Control module
 
-import time, sys
+import time, sys, json
 from powermanager import PowerManager
 from sensors import Sensors
 from gsmboard import GsmBoard
@@ -31,8 +31,8 @@ class ControlBoard:
 		if ('module' not in kwargs or 'function' not in kwargs or 'args' not in kwargs):
 			print 'Function status called wrong'
 			return False
-		if (False and not kwargs['module'].getStatus()):
-			return {'err': False, 'msg': 'Status of ' + kwargs['module'].__name__ + ' has failed'}
+		if (False and kwargs['module'].getStatus()):
+			return {'err': False, 'msg': 'Status of  has failed'}
 		
 		return getattr(kwargs['module'], kwargs['function'])(*kwargs['args'])
 	
@@ -40,9 +40,10 @@ class ControlBoard:
 		return self.status(module = self.gsmBoard, function = 'isPending', args = [])
 	
 	def GSMPendingMessage(self):
-		return self.status(module = self.gsmBoard, function = 'latestMessage', args = [])
+		msg = self.status(module = self.gsmBoard, function = 'latestMessage', args = [])
+		return json.loads(msg)
 	
-	def handleGSMCommand(self, command):
+	def handleMessage(self, command):
 		print 'HANDLING COMMAND:', command
 		if (command['cmdName'] == 'setLogTime'):
 			self.logTime = command['value']
@@ -63,6 +64,7 @@ class ControlBoard:
 		return self.gsmBoard.sendMessage(id, msg)
 	
 	def getModuleLoad(self, moduleName):
+		self.powerBoard.getStatus()
 		return self.status(module = self.powerBoard, function = 'getLoad', args = [moduleName])
 		
 	def powerOverload(self):
@@ -90,6 +92,7 @@ if __name__ == '__main__':
 	sys.stdout = Unbuffered(sys.stdout)
 	control = ControlBoard()
 	print 'Control module start'
+	print control.logging.retrieve('all')
 	
 	while (True):
 		control.updateSensors()
@@ -100,6 +103,7 @@ if __name__ == '__main__':
 		if (powerStatus == False):
 			print 'Working fine'
 		else:
+			print powerStatus
 			print 'Overload!'
 		
 		if (time.time() - control.lastLogTime > control.logTime):
