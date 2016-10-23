@@ -24,14 +24,14 @@ class ControlBoard:
 		
 		self.moduleNames = ['controlBoard', 'powerBoard', 'sensorBoard', 'logging', 'gsmBoard', 'radioBoard']
 		self.logTime = 5
-		self.lastLogTime = 99
-		self.sensorData = {'light': 0, 'acc': 0, 'tmp': 0, 'baro': 0}
+		self.lastLogTime = 0
+		self.sensorData = {'light': None, 'acc': None, 'tmp': None, 'baro': None}
 	
 	def status(self, **kwargs):
 		if ('module' not in kwargs or 'function' not in kwargs or 'args' not in kwargs):
 			print 'Function status called wrong'
 			return False
-		if (not kwargs['module'].getStatus()):
+		if (False and not kwargs['module'].getStatus()):
 			return {'err': False, 'msg': 'Status of ' + kwargs['module'].__name__ + ' has failed'}
 		
 		return getattr(kwargs['module'], kwargs['function'])(*kwargs['args'])
@@ -51,7 +51,7 @@ class ControlBoard:
 		return True
 	
 	def updateSensors(self):
-		self.sensorData['light'] = None#self.status(module = self.sensorBoard, function = 'getAccelerometer', args = [])
+		self.sensorData['light'] = self.status(module = self.sensorBoard, function = 'getLightSensor', args = [])
 		self.sensorData['acc'] = self.status(module = self.sensorBoard, function = 'getAccelerometer', args = [])
 		self.sensorData['tmp'] = self.status(module = self.sensorBoard, function = 'getAirTemperature', args = [])
 		self.sensorData['baro'] = self.status(module = self.sensorBoard, function = 'getBarometer', args = [])
@@ -102,7 +102,7 @@ if __name__ == '__main__':
 			print 'Overload!'
 		
 		if (time.time() - control.lastLogTime > control.logTime):
-			control.writeLog()
+			control.writeLog(control.sensorData)
 		
 		time.sleep(1)
 	
