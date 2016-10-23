@@ -11,6 +11,9 @@ class Database:
         self.dbFile = 'data.db'
         self.initDB()
 
+    def getStatus(self):
+        return True
+
     def initDB(self):
         # checking if table exists is done in side schema.sql
         with sql.connect(self.dbFile) as con:
@@ -23,7 +26,7 @@ class Database:
         time.sleep(1)
         query = 'INSERT INTO data VALUES ("{}",'.format(strftime("%Y-%m-%d %H:%M:%S",
         gmtime()))
-        attributes = 'light', 'acc', 'tmp', 'baro'
+        attributes = 'longitude', 'latitude', 'light', 'acc', 'tmp', 'baro'
         for i, attr in enumerate(attributes):
             if i < len(attributes)-1:
                 query += str(data[attr]) + ','
