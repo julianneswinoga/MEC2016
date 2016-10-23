@@ -16,4 +16,4 @@ class GPS:
 		self.coordW = 79.982
 
 	def getStatus(self):
-        return true
+		return true
