@@ -7,7 +7,14 @@ class Server:
         gsm = gsm
         HOST = ''
         PORT = 8888
-        threading.Thread(target=self.listen, kwargs={'HOST': HOST, 'PORT': PORT, 'gsm': gsm}).start()
+        threadStatus = {'running': True}
+        thread = threading.Thread(target=self.listen, kwargs={'HOST': HOST, 'PORT': PORT, 'gsm': gsm, 'status': threadStatus})
+
+        try:
+            thread.start()
+        except (KeyboardInterrupt, SystemExit, EOFError):
+            print('hello')
+            threadStatus['running'] = False
 
     def listen(self, **kwargs):
         # Datagram (udp) socket
@@ -22,9 +29,12 @@ class Server:
             s.bind((kwargs['HOST'], kwargs['PORT']))
         except socket.error , msg:
             pass
+
+        s.setblocking(0)
              
         #now keep talking with the client
-        while 1:
+        while kwargs['status']['running']:
+            print('running')
             # receive data from client (data, addr)
             d = s.recvfrom(1024)
             data = d[0]

@@ -1,4 +1,5 @@
 import sys, webbrowser
+import gsmboard
 
 try:
 	import pygtk
@@ -26,19 +27,18 @@ class BuoyWindow:
 		gtk.main_quit()
 		
 if __name__ == "__main__":
-	#main = BuoyWindow()
-	#gtk.main()
+    #main = BuoyWindow()
+    #gtk.main()
 
-	print "Starting...\n"
+    print "Starting...\n"
 
-	knownIPs = ["172.17.52.75"]
+    knownIPs = ["172.17.52.75"]
 
-	while True:
-		ip = knownIPs[int(raw_input("Enter ID: ")]
-		command = raw_input("Enter command: ")
-		value = 0    
-		try:
-			value = raw_input("Enter value: ")
-		except:
-			value = 0
-		print ip, command, value,"\n"
+    while True:
+        ip = raw_input("Enter IP: (default: {})".format(knownIPs[0]))
+        if not(ip):
+            ip = knownIPs[0]
+        command = raw_input("Enter command: ")
+
+        gsm = gsmboard.GsmBoard()
+        gsm.send(ip, command)
