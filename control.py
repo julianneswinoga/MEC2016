@@ -43,6 +43,7 @@ class ControlBoard:
 		return self.status(module = self.gsmBoard, function = 'latestMessage', args = [])
 	
 	def handleGSMCommand(self, command):
+		print 'HANDLING COMMAND:', command
 		if (command['cmdName'] == 'setLogTime'):
 			self.logTime = command['value']
 		elif (command['cmdName'] == 'getStatus'):
@@ -89,8 +90,6 @@ if __name__ == '__main__':
 	sys.stdout = Unbuffered(sys.stdout)
 	control = ControlBoard()
 	print 'Control module start'
-	
-	print 'Power manager status:', control.status(module = control.powerBoard, function = 'getStatus', args = [])
 	
 	while (True):
 		control.updateSensors()
