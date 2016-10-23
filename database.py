@@ -33,15 +33,20 @@ class Database:
 
     def insert(self, data):
         query = self.createQuery(data)
-        print query
         with sql.connect(self.dbFile) as con:
             cur = con.cursor()
             cur.execute(query)
 
-    def retreive(self, type_, from_, to):
-        if type_ == 'all':
-            pass
-        elif type_ == 'range':
-            pass
-        elif type_ == 'to':
-            pass
+    def retrieve(self, type_, from_=None, to=None):
+        with sql.connect(self.dbFile) as con:
+            cur = con.cursor()
+            if type_ == 'all':
+                cur.execute('SELECT * FROM data')
+                return cur.fetchall()
+            elif type_ == 'range':
+                cur.execute('SELECT * FROM data WHERE time >= {} AND time <= {}'.format(from_, to))
+                return cur.fetchall()
+            elif type_ == 'latest':
+                cur.execute('SELECT * FROM data')
+                return cur.fetchall()[-1]
+                
