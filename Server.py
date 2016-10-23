@@ -13,7 +13,6 @@ class Server:
         try:
             thread.start()
         except (KeyboardInterrupt, SystemExit, EOFError):
-            print('hello')
             threadStatus['running'] = False
 
     def listen(self, **kwargs):
@@ -30,14 +29,20 @@ class Server:
         except socket.error , msg:
             pass
 
-        s.setblocking(0)
+        s.settimeout(1)
              
         #now keep talking with the client
         while kwargs['status']['running']:
-            print('running')
             # receive data from client (data, addr)
-            d = s.recvfrom(1024)
-            data = d[0]
-            addr = d[1]
-             
-            kwargs['gsm'].addToBuffer(self.data)
+            try:
+                d = s.recvfrom(1024)
+                data = d[0]
+                addr = d[1]
+                 
+                print('Receiving', data)
+                print(kwargs['gsm'].addToBuffer(data))
+
+                #kwargs['gsm'].addToBuffer(self.data)
+            except:
+                pass
+

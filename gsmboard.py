@@ -34,5 +34,9 @@ class GsmBoard: #gsm board module
     def latestMessage(self): #get the oldest element in the buffer
         return self.buffer.pop(0)
         
+    def func(self):
+        print('hello')
+
     def addToBuffer(self, element): #add to the buffer
+        print 'adding to buffer:'
         self.buffer.append(element)

@@ -41,4 +41,5 @@ if __name__ == "__main__":
         command = raw_input("Enter command: ")
 
         gsm = gsmboard.GsmBoard()
+        print('sending data')
         gsm.send(ip, command)

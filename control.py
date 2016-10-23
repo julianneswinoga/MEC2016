@@ -99,9 +99,9 @@ if __name__ == '__main__':
 	
 		powerStatus = control.powerOverload()
 		if (powerStatus == False):
-			print 'Working fine'
+                    pass
 		else:
-			print 'Overload!'
+                    print 'Overload!'
 		
 		if (time.time() - control.lastLogTime > control.logTime):
 			control.writeLog(control.sensorData)
