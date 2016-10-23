@@ -25,7 +25,7 @@ class ControlBoard:
 		self.moduleNames = ['controlBoard', 'powerBoard', 'sensorBoard', 'logging', 'gsmBoard', 'radioBoard']
 		self.logTime = 5
 		self.lastLogTime = 0
-		self.sensorData = {'light': None, 'acc': None, 'tmp': None, 'baro': None}
+		self.sensorData = {'longitude': None,'latitude': None,'light': None, 'acc': None, 'tmp': None, 'baro': None}
 	
 	def status(self, **kwargs):
 		if ('module' not in kwargs or 'function' not in kwargs or 'args' not in kwargs):
@@ -51,6 +51,8 @@ class ControlBoard:
 		return True
 	
 	def updateSensors(self):
+		self.sensorData['longitude'] = self.status(module = self.sensorBoard, function = 'getGPS', args = [])[0]
+		self.sensorData['latitude'] = self.status(module = self.sensorBoard, function = 'getGPS', args = [])[1]
 		self.sensorData['light'] = self.status(module = self.sensorBoard, function = 'getLightSensor', args = [])
 		self.sensorData['acc'] = self.status(module = self.sensorBoard, function = 'getAccelerometer', args = [])
 		self.sensorData['tmp'] = self.status(module = self.sensorBoard, function = 'getAirTemperature', args = [])

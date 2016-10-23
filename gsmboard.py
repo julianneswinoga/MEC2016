@@ -1,4 +1,4 @@
-import Server
+from Server import Server
 
 class GsmBoard: #gsm board module
     def __init__(self): #initialization
