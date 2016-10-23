@@ -1,4 +1,5 @@
 from Server import Server
+import socket
 
 class GsmBoard: #gsm board module
     def __init__(self): #initialization
@@ -13,7 +14,7 @@ class GsmBoard: #gsm board module
     def getStatus(self): #get the component status
         return self.status
         
-    def send(host, msg):
+    def send(self, host, msg):
         try:
             s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         except socket.error:
