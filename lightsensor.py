@@ -11,4 +11,4 @@ class LightSensor:
 	def updateLightData(self):
 		self.lightsensor = 35
 	def getStatus(self):
-        return true
+		return true
